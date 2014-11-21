@@ -1,29 +1,38 @@
 import model
 import view
 import sys
+from datetime import datetime
+
 
 class Game:
     def __init__ (self):
-        self.start_game(view.welcome())
-        # get name and pass to model
-        pass
+        if view.welcome():
+            self.login(view.login())
+        else:
+            self.sign_up(view.sign_up())
 
-    def start_game(self, name):
-        # give name to model/db
-        #get rpm from model/db
-        #give rpm to view
-        #save start time
-        pass
+    def sign_up(self, obj):
+        verify = model.sign_up(obj)
+        if verify:
+            self.next_round(verify)
+        else:
+            view.name_exists()
+
+    def login(self, obj):
+        verify = model.login(obj)
+        if verify:
+            self.next_round(verify)
+        else:
+            view.incorrect_password()
 
     def end_round(self, real_answer, their_answer):
-        pass
-        #store stats in db
+        model.save_turn((real_answer == their_answer), datetime.now(), diff)
         self.next_round()
 
     def next_round(self):
-        pass
-        #save last round stats (time, )
-        #get next rpm from model/db
+        rpn = model.new_rpn()
+        start_time = datetime.now()
+        view.show_rpn(rpn, start_time, rpn.diff)
 
 
     # def check_high_scores(self):
@@ -35,7 +44,7 @@ class Game:
         # pass
 
     def end_game(self):
-        #close db
+        model.close_db()
         sys.exit()
 
 this_game = Game()
