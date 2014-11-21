@@ -3,7 +3,6 @@ import view
 import sys
 from datetime import datetime
 
-
 class Game:
     def __init__ (self):
         if view.welcome():
@@ -12,14 +11,14 @@ class Game:
             self.sign_up(view.sign_up())
 
     def sign_up(self, obj):
-        verify = model.sign_up(obj)
-        if verify:
-            self.next_round(verify)
+        this_user = model.User.create_new_user(obj)
+        if this_user:
+            self.next_round(this_user)
         else:
             view.name_exists()
 
     def login(self, obj):
-        verify = model.login(obj)
+        verify = model.User(obj)
         if verify:
             self.next_round(verify)
         else:
