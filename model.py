@@ -25,6 +25,7 @@ class RPN:
 		chosenFirstNumber = str(random.randint(1,numberLimit))
 		chosenSecondNumber = str(random.randint(1,numberLimit))
 		return chosenOperator, chosenFirstNumber, chosenSecondNumber
+
 	# broken
 	@staticmethod
 	def answer_equation(equation):
