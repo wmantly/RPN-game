@@ -7,7 +7,7 @@ class Game:
         pass
 
     def create_account(self, name):
-        #save name to db
+        model.create_account(name)
         pass
 
     def start_game(self):
