@@ -3,11 +3,12 @@ import view
 
 class Game:
     def __init__ (self):
-        # display initial view
+        start_game(view.welcome())
         # get name and pass to model
         pass
 
-    def start_game(self):
+    def start_game(self, name):
+        # give name to model/db
         #get rpm from model/db
         #give rpm to view
         #save start time
