@@ -36,9 +36,9 @@ def create_turns_table():
 	c.execute(""" CREATE TABLE 'turns'(
 		'id' INTEGER,
 		'session_id' INTEGER,
-		'difficulty_lvl' DATE,
+		'difficulty_lvl' INTEGER,
 		'correct_incorrect' VARCHAR,
-		'time_taken' DATE,
+		'time_taken' INTEGER,
 		PRIMARY KEY ('id'),
 		FOREIGN KEY (session_id) REFERENCES sessions(id)
 		)""")
