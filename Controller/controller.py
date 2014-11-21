@@ -3,18 +3,21 @@ import view
 
 class Game:
     def __init__ (self):
-        # display initial view
+        start_game(view.welcome())
+        # get name and pass to model
         pass
 
-    def create_account(self, name):
-        model.create_account(name)
-        pass
-
-    def start_game(self):
+    def start_game(self, name):
+        # give name to model/db
         #get rpm from model/db
         #give rpm to view
         #save start time
         pass
+
+    def end_round(self, real_answer, their_answer):
+        pass
+        #store stats in db
+        next_round()
 
     def next_round(self):
         pass
