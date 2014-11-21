@@ -11,14 +11,15 @@ class Game:
             self.sign_up(view.sign_up())
 
     def sign_up(self, obj):
-        this_user = model.User.create_new_user(obj)
+        this_user = User.create_new_user(obj.name, obj.password)
         if this_user:
             self.next_round(this_user)
         else:
             view.name_exists()
 
     def login(self, obj):
-        verify = model.User(obj)
+        db = DB()
+        verify = db.fetch_user(obj.name, obj.password)
         if verify:
             self.next_round(verify)
         else:
@@ -34,9 +35,11 @@ class Game:
             info_obj.time_taken = (last_turn.end_time - last_turn.start_time)
             info_obj.last_rpn = last_turn.rpn.equation
             info_obj.answer = last_turn.rpn.answer_equation
+            info_obj.right_or_wrong = last_turn.correct_incorrect
         answer = view.show_rpn(info_obj)
         new_turn.correct_incorrect = (new_turn.rpn.answer_equation == answer)
         new_turn.end_time = datetime.now()
+        new_turn.time_taken = new_turn.end_time - new_turn.start_time
         db.save_turn(new_turn)
         self.new_round(new_turn)
 
