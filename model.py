@@ -6,7 +6,7 @@ class User:
 
 class DB:
 	def __init__(self,db_name):
-		self.db_name = db_name+"db"
+		self.db_name = db_name+".db"
 	
 	def create_user(self):
 		pass
@@ -17,7 +17,7 @@ class RPN:
 	def __init__(self):
 		self.equation = ""
 		self.answer_equation = ""
-		self.User_answer = ""
+		self.user_answer = ""
 
 	def chooseRandom(self,operatorLimit,numberLimit):
 		Operators = ["+","-","*","/"]
@@ -25,9 +25,9 @@ class RPN:
 		chosenFirstNumber = str(random.randint(1,numberLimit))
 		chosenSecondNumber = str(random.randint(1,numberLimit))
 		return chosenOperator, chosenFirstNumber, chosenSecondNumber
+
 	# broken
-	@staticmethod
-	def answer_equation(equation):
+	def answer_equation(self,equation):
 		x = 0
 		ops = ["+", "-", "*", "/"]
 		stack = []
@@ -59,10 +59,8 @@ class RPN:
 		return TestString
 	def compare_user_answer(self,user_answer):
 		pass
-# test 
 
-# if __name__ == '__main__':
-# 	rpn = RPN()
-# 	eq = rpn.genater_equation(2,10,5)
-# 	print(eq)
-# 	rpn.answer_equation([])
+# test 
+rpn = RPN()
+eq = rpn.genater_equation(2,10,5)
+print(eq)
