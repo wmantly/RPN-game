@@ -24,23 +24,23 @@ class Game:
         else:
             view.incorrect_password()
 
-    def end_round(self, real_answer, their_answer):
-        model.save_turn((real_answer == their_answer), datetime.now(), diff)
-        self.next_round()
+    def new_round(self):
+        new_turn = Turn.create_turn()
+        now_turn.start_time = datetime.now()
+        new_turn.correct_incorrect = (new_turn.rpn.answer_equation == view.show_rpn(''.join(new_turn.rpn.equation)))
+        new_turn.end_time = datetime.now()
+        db.save_turn(new_turn)
+        self.new_round()
 
-    def next_round(self):
-        rpn = model.new_rpn()
-        start_time = datetime.now()
-        view.show_rpn(rpn, start_time, rpn.diff)
-
-
-    # def check_high_scores(self):
+    def check_high_scores(self):
         #get high scores from model/db
-        # pass
+        #pass scores to view
+        pass
 
-    # def check_personal_stats(self):
+    def check_personal_stats(self):
         #get personal stats from model/db
-        # pass
+        #pass scores to view
+        pass
 
     def end_game(self):
         model.close_db()
