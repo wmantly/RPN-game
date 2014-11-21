@@ -13,6 +13,11 @@ class Game:
         #save start time
         pass
 
+    def end_round(self, real_answer, their_answer):
+        pass
+        #store stats in db
+        next_round()
+
     def next_round(self):
         pass
         #save last round stats (time, )
