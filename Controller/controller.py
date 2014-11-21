@@ -7,10 +7,11 @@ class Game:
         pass
 
     def create_account(self, name):
+        #save name to db
         pass
 
     def start_game(self):
-        #get rpm from model
+        #get rpm from model/db
         #give rpm to view
         #save start time
         pass
@@ -18,14 +19,16 @@ class Game:
     def next_round(self):
         pass
         #save last round stats (time, )
-        #get next rpm from model
+        #get next rpm from model/db
 
 
-    def check_high_scores(self):
-        pass
+    # def check_high_scores(self):
+        #get high scores from model/db
+        # pass
 
-    def check_personal_stats(self):
-        pass
+    # def check_personal_stats(self):
+        #get personal stats from model/db
+        # pass
 
     def end_game(self):
         pass
