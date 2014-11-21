@@ -4,10 +4,7 @@ import view
 class Game:
     def __init__ (self):
         # display initial view
-        pass
-
-    def create_account(self, name):
-        model.create_account(name)
+        # get name and pass to model
         pass
 
     def start_game(self):
