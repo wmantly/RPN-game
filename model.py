@@ -29,7 +29,7 @@ class RPN:
 	@staticmethod
 	def answer_equation(equation):
 		x = 0
-		ops = ["+", "-", "*", "/"]
+		ops = ["+", "-", "*"] # "\", "mod"
 		stack = []
 		while x < len(equation):
 			if not equation[x] in ops:
@@ -42,10 +42,11 @@ class RPN:
 		return (stack[0])
 
 
-	def genater_equation(self,operatorLimit,numberLimit,lengthLimit):
+	def generate_equation(self,operatorLimit,numberLimit,lengthLimit):
 		chosenLength = random.randint(1,lengthLimit)
 		TestString = []
 		length = 0
+
 		while length < chosenLength:
 			currentOperator, currentFirstNumber, currentSecondNumber = self.chooseRandom(operatorLimit,numberLimit)
 			if length == 0:
@@ -57,12 +58,14 @@ class RPN:
 				TestString.append(currentOperator)
 			length += 1
 		return TestString
+
 	def compare_user_answer(self,user_answer):
 		pass
+
 # test 
 
 # if __name__ == '__main__':
 # 	rpn = RPN()
-# 	eq = rpn.genater_equation(2,10,5)
+# 	eq = rpn.generate_equation(2,10,5)
 # 	print(eq)
 # 	rpn.answer_equation([])
