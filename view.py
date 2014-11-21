@@ -1,36 +1,24 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*- 
-
-import curses
-import time
-
-screen = curses.initscr() 
-curses.noecho() 
-curses.curs_set(1) 
-screen.keypad(1)
-
-
 def welcome():
-    screen.addstr("This is a Sample Curses Script\n\n")
-    time.sleep(2)
-    screen.addstr('''
-        Press n for new user\n\n
-        Press l to login
-        Press Q for quit
+    print('''
+        Welcome to the RPN game!
+
+        Go bears
+
+        l (enter) login
+        n (enter) new user
         ''')
 
-    while True: 
-        event = screen.getch() 
-        if event == ord("Q"): break
-        if event == ord("n"): return False
-        if event == ord("l"): return True
+    temp = input( "Choice:\n" )
+
+    if temp == l: return True;
+    else: return False
+
+def sign_up():
+    name = input( "Please enter a user Name:\n" )
+    password = input( "Please enter a pin:\n" )
+    return( { name:name, password:password } )
 
 def login():
-    screen.clear()
-    screen.addstr('''Please enter your user name\n\n
-        ''')
-    time.sleep(5)
-    return {name:'testUser',password:'testPass' }
-
-curses.endwin()
-
+    name = input( "Please enter a user Name:\n" )
+    password = input( "Please enter a pin:\n" )
+    return( { name:name, password:password } )
