@@ -30,21 +30,21 @@ def create_sessions_table():
     c.close()
 
 def create_turns_table():
-    conn = sqlite3.connect(defaultdb)
-    c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS 'turns'")
-    c.execute(""" CREATE TABLE 'turns'(
-        'id' INTEGER,
-        'session_id' INTEGER,
-        'difficulty_lvl' DATE,
-        'correct_incorrect' VARCHAR,
-        'time_taken' DATE,
-        PRIMARY KEY ('id'),
-        FOREIGN KEY (session_id) REFERENCES sessions(id)
-        )""")
-    conn.commit()
-    c.close()
-    
+	conn = sqlite3.connect(defaultdb)
+	c = conn.cursor()
+	c.execute("DROP TABLE IF EXISTS 'turns'")
+	c.execute(""" CREATE TABLE 'turns'(
+		'id' INTEGER,
+		'session_id' INTEGER,
+		'difficulty_lvl' INTEGER,
+		'correct_incorrect' VARCHAR,
+		'time_taken' INTEGER,
+		PRIMARY KEY ('id'),
+		FOREIGN KEY (session_id) REFERENCES sessions(id)
+		)""")
+	conn.commit()
+	c.close()
+	
 create_users_table()
 create_turns_table()
 create_sessions_table()
