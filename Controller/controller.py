@@ -1,9 +1,10 @@
 import model
 import view
+import sys
 
 class Game:
     def __init__ (self):
-        start_game(view.welcome())
+        self.start_game(view.welcome())
         # get name and pass to model
         pass
 
@@ -17,7 +18,7 @@ class Game:
     def end_round(self, real_answer, their_answer):
         pass
         #store stats in db
-        next_round()
+        self.next_round()
 
     def next_round(self):
         pass
@@ -34,5 +35,7 @@ class Game:
         # pass
 
     def end_game(self):
-        pass
         #close db
+        sys.exit()
+
+this_game = Game()
