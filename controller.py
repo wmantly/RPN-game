@@ -28,13 +28,13 @@ class Game:
         new_turn = Turn.create_turn()
         now_turn.start_time = datetime.now()
         rpn_as_string = ''.join(new_turn.rpn.equation)
-        show_info_and_rpn = []
-        show_info_and_rpn.append(rpn_as_string)
+        info_obj = {}
+        info_obj.rpn = rpn_as_string
         if last_turn:
-            show_info_and_rpn.append(last_turn.end_time - last_turn.start_time)
-            show_info_and_rpn.append(last_turn.rpn.equation)
-            show_info_and_rpn.append(last_turn.rpn.answer_equation)
-        answer = view.show_rpn(show_info_and_rpn)
+            info_obj.time_taken = (last_turn.end_time - last_turn.start_time)
+            info_obj.last_rpn = last_turn.rpn.equation
+            info_obj.answer = last_turn.rpn.answer_equation
+        answer = view.show_rpn(info_obj)
         new_turn.correct_incorrect = (new_turn.rpn.answer_equation == answer)
         new_turn.end_time = datetime.now()
         db.save_turn(new_turn)
