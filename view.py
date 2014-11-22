@@ -30,16 +30,16 @@ def login():
     return( { 'name':name, 'password':password } )
 
 def show_rpn( obj ):
-    if len(a) > 2:
+    if len(obj) > 2:
         
-        if obj.right_or_wrong:
+        if obj["right_or_wrong"]:
             print( "Right!" )
         else:
-            print( "Wrong!, the correct answer is " + obj.answer )
-        print( "time taken: " + obj.time_taken )
+            print( "Wrong!, the correct answer is " + obj["answer"] )
+        print( "time taken: " + obj["time_taken"] )
 
     print( "Please solve!\n") 
-    print( solve + "\n" )
+    print( obj["rpn"] + "\n" )
     return input('?')
 
 ##testing
