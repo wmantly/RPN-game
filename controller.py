@@ -12,11 +12,11 @@ class Game:
 
     def sign_up(self, obj):
         db = model.DB()
-        this_user = db.create_new_user(obj.name, obj.password)
+        this_user = db.create_user(obj['name'], obj['password'])
         if this_user:
             self.next_round(this_user)
         else:
-            view.name_exists()
+            self.sign_up( view.name_exists() )
 
     def login(self, obj):
         db = model.DB()

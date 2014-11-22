@@ -19,7 +19,7 @@ class DB:
         conn = sqlite3.connect(self.db_name)
         c  = conn.cursor()
         
-        if( isinstance( x, int ) ): 
+        if( isinstance( pin, int ) ): 
             c.execute("INSERT INTO user VALUES (?,?)",(name,pin))
             conn.commit()
             c.close()
