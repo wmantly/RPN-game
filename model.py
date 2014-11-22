@@ -48,8 +48,8 @@ class DB:
 
 class Turns:
 	def __init__(self):
-		# self.start time = None
-		# self.end_time = None
+		self.start_time = None
+		self.end_time = None
 		self.difficulty_lvl = 1
 		self.correct_incorrect = None 
 		self.time_taken = None
