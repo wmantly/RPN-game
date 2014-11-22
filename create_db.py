@@ -2,11 +2,11 @@ import sqlite3
 
 defaultdb = "rpngame.db"
 
-def create_users_table():
+def create_user_table():
     conn = sqlite3.connect(defaultdb)
     c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS 'users'")
-    c.execute(""" CREATE TABLE 'users'(
+    c.execute("DROP TABLE IF EXISTS 'user'")
+    c.execute(""" CREATE TABLE 'user'(
         'id' INTEGER,
         'name' VARCHAR,
         'pin' VARCHAR,
@@ -21,10 +21,10 @@ def create_sessions_table():
     c.execute("DROP TABLE IF EXISTS 'sessions'")
     c.execute(""" CREATE TABLE 'sessions'(
         'id' INTEGER,
-        'users_id' INTEGER,
+        'user_id' INTEGER,
         'created_at' DATE,
         PRIMARY KEY ('id'),
-        FOREIGN KEY(users_id) REFERENCES users(id)) 
+        FOREIGN KEY(user_id) REFERENCES user(id)) 
     """)
     conn.commit()
     c.close()
@@ -45,6 +45,6 @@ def create_turns_table():
 	conn.commit()
 	c.close()
 	
-create_users_table()
+create_user_table()
 create_turns_table()
 create_sessions_table()
