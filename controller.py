@@ -33,12 +33,12 @@ class Game:
         new_turn.start_time = datetime.now()
         rpn_as_string = ''.join(new_turn.rpn.expression)
         info_obj = {}
-        info_obj.rpn = rpn_as_string
+        info_obj["rpn"] = rpn_as_string
         if last_turn:
-            info_obj.time_taken = (last_turn.end_time - last_turn.start_time)
-            info_obj.last_rpn = last_turn.rpn.expression
-            info_obj.answer = last_turn.rpn.solution
-            info_obj.right_or_wrong = last_turn.correct_incorrect
+            info_obj["time_taken"] = (last_turn.end_time - last_turn.start_time)
+            info_obj["last_rpn"] = last_turn.rpn.expression
+            info_obj["answer"] = last_turn.rpn.solution
+            info_obj["right_or_wrong"] = last_turn.correct_incorrect
         answer = view.show_rpn(info_obj)
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
