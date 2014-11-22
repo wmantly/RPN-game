@@ -31,7 +31,7 @@ class Game:
     def new_round(self, last_turn = None):
         new_turn = model.Turns()
         new_turn.start_time = datetime.now()
-        rpn_as_string = ''.join(new_turn.rpn.expression)
+        rpn_as_string = ' '.join(new_turn.rpn.expression)
         info_obj = {}
         info_obj["rpn"] = rpn_as_string
         if last_turn:
@@ -43,6 +43,7 @@ class Game:
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
+        db = model.DB()
         db.save_turn(new_turn)
         self.new_round(new_turn)
 
