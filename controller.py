@@ -16,7 +16,7 @@ class Game:
         print(this_user)
         input()
         if this_user:
-            self.next_round(this_user)
+            self.new_round(this_user)
         else:
             self.sign_up( view.name_exists() )
 
@@ -24,13 +24,13 @@ class Game:
         db = model.DB()
         verify = db.fetch_user(obj['name'], obj['password'])
         if verify:
-            self.next_round(verify)
+            self.new_round()
         else:
             view.incorrect_password()
 
     def new_round(self, last_turn = None):
-        new_turn = Turn.create_turn()
-        now_turn.start_time = datetime.now()
+        new_turn = model.Turns
+        new_turn.start_time = datetime.now()
         rpn_as_string = ''.join(new_turn.rpn.equation)
         info_obj = {}
         info_obj.rpn = rpn_as_string
