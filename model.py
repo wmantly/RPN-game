@@ -16,16 +16,11 @@ class DB:
 	# please use number for pins
 	def create_user(self,name,pin):
 		conn = sqlite3.connect(self.db_name)
-		c  = conn.cursor()
-		if(isinstance( pin, int ) ): 
-			c.execute("INSERT INTO user VALUES (?,?)",(name,pin))
-			conn.commit()
-			c.close()
-			return True
-		else:
-			conn.commit()
-			c.close()
-			return False 
+		c  = conn.cursor() 
+		c.execute("INSERT INTO user(name,pin)VALUES (?,?)",(name,pin))
+		conn.commit()
+		c.close()
+		return True
 	
 	def update_user_stats(self):
 		pass
@@ -33,14 +28,17 @@ class DB:
 	def fetch_user(self,name,pin):
 		conn = sqlite3.connect(self.db_name)
 		c = conn.cursor()
-		# how to code in error checking
-		c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(name,pin))
-		user_data = c.fetchall()[0]
-		user = User(user_data[0],user_data[1])
-		conn.commit()
-		c.close()
-		return user
-	# inorder for this code to work this needs the session id
+		c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(pin,name))
+		try:
+			user_data = c.fetchall()[0]
+			user = User(user_data[0],user_data[1])
+			conn.commit()
+			c.close()
+			return True,user
+		except IndexError:
+			return False
+
+ 	# inorder for this code to work this needs the session id
 	def save_turn(self,turn_obj):
 		conn = sqlite3.connect(self.db_name)
 		c = conn.cursor()
@@ -108,5 +106,5 @@ class RPN:
         pass
 
 # test 
-rpn = RPN(2,10, 7)
-print(rpn.expression)
+# rpn = RPN(2,10, 7)
+# print(rpn.expression)
