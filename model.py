@@ -53,7 +53,7 @@ class Turns:
 		self.difficulty_lvl = 1
 		self.correct_incorrect = None 
 		self.time_taken = None
-		self.rpn = RPN()
+		self.rpn = RPN(1, 10, 7)
 
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
@@ -106,5 +106,6 @@ class RPN:
         pass
 
 # test 
-# rpn = RPN(2,10, 7)
+# rpn = RPN(1,10, 7)
 # print(rpn.expression)
+# print(rpn.generate_solution)
