@@ -16,7 +16,7 @@ class Game:
         print(this_user)
         input()
         if this_user:
-            self.new_round(this_user)
+            self.new_round()
         else:
             self.sign_up( view.name_exists() )
 
@@ -29,7 +29,7 @@ class Game:
             view.incorrect_password()
 
     def new_round(self, last_turn = None):
-        new_turn = model.Turns
+        new_turn = model.Turns()
         new_turn.start_time = datetime.now()
         rpn_as_string = ''.join(new_turn.rpn.expression)
         info_obj = {}
@@ -45,6 +45,10 @@ class Game:
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
         db.save_turn(new_turn)
         self.new_round(new_turn)
+
+    def calculate_next_rpn_diff(self):
+        #run some queries in the db to see if we should up the difficulty or drop it
+        pass        
 
     def check_high_scores(self):
         #get high scores from model/db
