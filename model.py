@@ -10,50 +10,52 @@ class User:
         # maybe score should be here
 
 class DB:
-    def __init__(self):
-        self.db_name = defaultdb
-    
-    # please use number for pins
-    def create_user(self,name,pin):
-        
-        conn = sqlite3.connect(self.db_name)
-        c  = conn.cursor()
-        
-        if( isinstance( pin, int ) ): 
-            c.execute("INSERT INTO user VALUES (?,?)",(name,pin))
-            conn.commit()
-            c.close()
-            return True
-        else:
-            conn.commit()
-            c.close()
-            return False 
-    
-    def update_user_stats(self):
-        pass
+	def __init__(self):
+		self.db_name = defaultdb
+	
+	# please use number for pins
+	def create_user(self,name,pin):
+		conn = sqlite3.connect(self.db_name)
+		c  = conn.cursor()
+		if(isinstance( pin, int ) ): 
+			c.execute("INSERT INTO user VALUES (?,?)",(name,pin))
+			conn.commit()
+			c.close()
+			return True
+		else:
+			conn.commit()
+			c.close()
+			return False 
+	
+	def update_user_stats(self):
+		pass
 
-    def fetch_user(self,name,pin):
-        conn = sqlite3.connect(self.db_name)
-        c = conn.cursor()
-        # how to code in error checking
-        c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(name,pin))
-        user_data = c.fetchall()[0]
-        user = User(user_data[0],user_data[1])
-        conn.commit()
-        c.close()
-        return user
-    
-    def save_turn(self,bool,time_take,difficulty_lvl):
-        pass
+	def fetch_user(self,name,pin):
+		conn = sqlite3.connect(self.db_name)
+		c = conn.cursor()
+		# how to code in error checking
+		c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(name,pin))
+		user_data = c.fetchall()[0]
+		user = User(user_data[0],user_data[1])
+		conn.commit()
+		c.close()
+		return user
+	# inorder for this code to work this needs the session id
+	def save_turn(self,turn_obj):
+		conn = sqlite3.connect(self.db_name)
+		c = conn.cursor()
+		c.execute("INSERT INTO turns VALUES(?,?,?,?)",(session_id,turn_obj.difficulty_lvl,turn_obj.correct_incorrect,turn_obj.time_taken))
+		conn.comit()
+		c.close()
 
 class Turns:
-    def __init__(self):
-        self.start_time = None
-        self.end_time = None
-        self.difficulty_lvl = 1
-        self.correct_incorrect = None 
-        self.time_taken = None
-        self.rpn = RPN()
+	def __init__(self):
+		# self.start time = None
+		# self.end_time = None
+		self.difficulty_lvl = 1
+		self.correct_incorrect = None 
+		self.time_taken = None
+		self.rpn = RPN()
 
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
