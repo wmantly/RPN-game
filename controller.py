@@ -31,7 +31,7 @@ class Game:
     def new_round(self, last_turn = None):
         new_turn = model.Turns()
         new_turn.start_time = datetime.now()
-        rpn_as_string = ''.join(new_turn.rpn.expression)
+        rpn_as_string = ' '.join(new_turn.rpn.expression)
         info_obj = {}
         info_obj["rpn"] = rpn_as_string
         if last_turn:
