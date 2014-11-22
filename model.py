@@ -4,10 +4,10 @@ import sqlite3
 defaultdb = "rpngame.db"
 
 class User:
-	def __init__(self,name_given,user_id):
-		self.name = name_given
-		self.id = user_id
-		# maybe score should be here
+    def __init__(self,name_given,user_id):
+        self.name = name_given
+        self.id = user_id
+        # maybe score should be here
 
 class DB:
 	def __init__(self):
@@ -17,8 +17,8 @@ class DB:
 	def create_user(self,name,pin):
 		conn = sqlite3.connect(self.db_name)
 		c  = conn.cursor()
-		if(isinstance( x, int ): 
-			c.execute("INSERT INTO users VALUES (?,?)",(name,pin))
+		if(isinstance( pin, int ) ): 
+			c.execute("INSERT INTO user VALUES (?,?)",(name,pin))
 			conn.commit()
 			c.close()
 			return True
@@ -34,7 +34,7 @@ class DB:
 		conn = sqlite3.connect(self.db_name)
 		c = conn.cursor()
 		# how to code in error checking
-		c.execute("SELECT name,id FROM users WHERE user.pin=(?) and user.name=(?)",(name,pin))
+		c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(name,pin))
 		user_data = c.fetchall()[0]
 		user = User(user_data[0],user_data[1])
 		conn.commit()
