@@ -11,6 +11,7 @@ class Game:
 
         # initialize the View class
         self.view = View( screen, curses )
+        self.sesh_totals = {}  
 
         if 'dev' in sys.argv:
             self.view.showDev = True
@@ -19,7 +20,6 @@ class Game:
             self.login(self.view.login())
         else:
             self.sign_up(self.view.sign_up())
-        self.sesh_totals = {}            
 
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
@@ -34,6 +34,7 @@ class Game:
     def login(self, obj):
         this_user = db.fetch_user(obj['name'], obj['password'])
         if this_user:
+            self.view.devConsole( [obj['name'], obj['password']] )
             db.save_sesh(this_user.user_id)             
             self.view.update_user( obj['name'] )
             self.new_round()
@@ -50,7 +51,7 @@ class Game:
         rpn_as_string = ' '.join(new_turn.rpn.expression)
         info_obj = {}
         info_obj["rpn"] = rpn_as_string
-        self.sesh_totals(last_turn)
+        self.change_sesh_totals(last_turn)
         if last_turn:
             last_turn.time_taken = last_turn.end_time - last_turn.start_time
             info_obj["time_taken"] = (last_turn.time_taken)
@@ -66,7 +67,7 @@ class Game:
         db.save_turn(new_turn)
         self.new_round(new_turn)
 
-    def sesh_totals(self, last_turn=None):
+    def change_sesh_totals(self, last_turn=None):
         self.sesh_totals['time'] = 0
         self.sesh_totals['correct'] = 0
         self.sesh_totals['wrong'] = 0
