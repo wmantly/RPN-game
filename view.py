@@ -180,7 +180,7 @@ class View:
                 self.body.addstr(2, 2, "Right!" )
             else:
                 self.body.addstr(2, 2, "Wrong!, the correct answer is " + obj['answer'] )
-            self.body.addstr(3, 2, "time taken: " + obj['time_taken'] )
+            self.body.addstr(3, 2, "time taken: " + str(obj['time_taken']) )
 
         self.body.addstr(4, 2, "Please solve!") 
         self.body.addstr(5, 2, obj["rpn"] + "\n" )
