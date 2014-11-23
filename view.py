@@ -116,7 +116,7 @@ class View:
         self.body.clear()
 
         self.body.addstr(2, 2, "Sorry, that name is all ready registered!" )
-        return sign_up( True )
+        return self.sign_up( True )
 
     def login( self ):
         # remove old body content

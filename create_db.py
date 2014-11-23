@@ -22,7 +22,7 @@ def create_sessions_table():
     c.execute(""" CREATE TABLE 'sessions'(
         'id' INTEGER,
         'user_id' INTEGER,
-        'created_at' DATE,
+        'created_at' TIMESTAMP DEFAULT CURRENT_TIME,
         PRIMARY KEY ('id'),
         FOREIGN KEY(user_id) REFERENCES user(id)) 
     """)
