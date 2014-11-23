@@ -24,7 +24,7 @@ class Game:
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
         if this_user:
-            self.view.update_user( obj['name'] )
+            # self.view.update_user( obj['name'] )
             db.save_sesh(this_user.user_id)
             self.new_round()
         else:
@@ -34,9 +34,8 @@ class Game:
     def login(self, obj):
         this_user = db.fetch_user(obj['name'], obj['password'])
         if this_user:
-            self.view.devConsole( [obj['name'], obj['password']] )
             db.save_sesh(this_user.user_id)             
-            self.view.update_user( obj['name'] )
+            # self.view.update_user( obj['name'] )
             self.new_round()
         else:
             message = "Invalid login"
@@ -44,7 +43,7 @@ class Game:
 
     def new_round(self, last_turn = None):
         # please find a way to get the user name into the call below
-        self.view.update_user( [ 'user name variable here' ] )
+        # self.view.update_user( [ 'user name variable here' ] )
 
         new_turn = model.Turns()
         new_turn.start_time = datetime.now()
@@ -62,7 +61,7 @@ class Game:
         answer = self.view.show_rpn(info_obj)
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
-        new_turn.time_taken = new_turn.end_time - new_turn.start_time
+        new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
         db = model.DB()
         db.save_turn(new_turn)
         self.new_round(new_turn)
@@ -74,12 +73,12 @@ class Game:
         self.sesh_totals['difficulty'] = 1   
 
         if last_turn:
-            self.sesh_totals['time'] += last_turn.time_taken
+            self.sesh_totals['time'] = last_turn.time_taken
             self.sesh_totals['correct'] += 1 if last_turn.correct_incorrect else 0
             self.sesh_totals['correct'] += 0 if last_turn.correct_incorrect else 1
             self.sesh_totals['difficulty'] = 1
         # each value of the list is line of output on the sidebar
-        self.view.update_side_bar( ['time', str(self.sesh_totals['time']),'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
+        # self.view.update_side_bar( ['last time', self.sesh_totals['time'],'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
 
     def calculate_next_rpn_diff(self):
         #run some queries in the db to see if we should up the difficulty or drop it
