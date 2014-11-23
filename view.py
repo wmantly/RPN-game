@@ -3,10 +3,13 @@
 import curses
 import time
 
+
 class View:
     def __init__( self ):
 
-        # start the courses instance
+        self.showDev = True
+
+        # start the curses instance
         self.screen = curses.initscr()
 
         # configure the whole screen
@@ -51,10 +54,10 @@ class View:
         
         # write the header up
         self.header.addstr( 1, 2, "Welcome to the RPN game!" )
-        self.header.addstr( 2, 2, "Go bears!" )
-
         #draw the header
         self.header.refresh()
+
+        self.header.addstr( 2, 2, "Go bears!" )
 
         # short pause
         time.sleep(.5)
@@ -114,11 +117,12 @@ class View:
     def name_exists( self ):
         # remove old body content
         self.body.clear()
+        self.body.flash()
 
         self.body.addstr(2, 2, "Sorry, that name is all ready registered!" )
         return sign_up( True )
 
-    def login( self ):
+    def login( self, message=False ):
         # remove old body content
         self.body.clear()
         # allow user to see KB input
@@ -132,6 +136,10 @@ class View:
 
         self.body.refresh()
         password = self.body.getstr(6, 2, 60)
+
+        if message:
+            self.body.addstr( 7,2, message )
+            self.body.refresh()
 
         return( { 'name':name, 'password':password } )
 
@@ -181,9 +189,17 @@ class View:
         answer = self.body.getstr(6, 3, 60)
         return answer
 
-    def dev(self, mess ):
+    def dev(self, message ):
         # side bar
-        self.dev = curses.newwin( 11, 20, 17 , 53)
+        if not self.showDev: return False
+
+        self.dev = curses.newwin( 50, 70, 17 , 3)
         self.dev.border(0)
-        pass
+        
+        count = 0
+        for i in message:
+            count += 1
+            self.dev.addstr( count, 2, i )
+
+            self.dev.refresh()
 ##testing

@@ -7,6 +7,7 @@ view = View()
 
 class Game:
     def __init__ (self):
+
         if view.welcome():
             self.login(view.login())
         else:
@@ -18,7 +19,8 @@ class Game:
         if this_user:
             self.new_round()
         else:
-            self.sign_up( view.name_exists() )
+            message = "User name taken"
+            self.sign_up(view.sign_up( message ))
 
     def login(self, obj):
         db = model.DB()
@@ -31,8 +33,7 @@ class Game:
             view.update_user( [ obj['name'] ] )
             self.new_round()
         else:
-            message = "User name taken"
-            self.sign_up(view.sign_up( message ))
+            self.login( view.login( "Invalid login" ) )
 
     def new_round(self, last_turn = None):
         new_turn = model.Turns()
