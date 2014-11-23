@@ -20,9 +20,10 @@ def create_sessions_table():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS 'sessions'")
     c.execute(""" CREATE TABLE 'sessions'(
-        'id' INTEGER PRIMARY KEY,
+        'id' INTEGER,
         'user_id' INTEGER,
-        'created_at' DATETIME DEFAULT CURRENT_TIMESTAMP,
+        'created_at' TIMESTAMP DEFAULT CURRENT_TIME,
+        PRIMARY KEY ('id'),
         FOREIGN KEY(user_id) REFERENCES user(id)) 
     """)
     conn.commit()
@@ -33,12 +34,11 @@ def create_turns_table():
 	c = conn.cursor()
 	c.execute("DROP TABLE IF EXISTS 'turns'")
 	c.execute(""" CREATE TABLE 'turns'(
-		'id' INTEGER,
+		'id' INTEGER PRIMARY KEY ,
 		'session_id' INTEGER,
 		'difficulty_lvl' INTEGER,
 		'correct_incorrect' VARCHAR,
 		'time_taken' INTEGER,
-		PRIMARY KEY ('id'),
 		FOREIGN KEY (session_id) REFERENCES sessions(id)
 		)""")
 	conn.commit()

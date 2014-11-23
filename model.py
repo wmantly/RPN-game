@@ -47,8 +47,8 @@ class DB:
     def save_turn(self,turn_obj):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute("INSERT INTO turns VALUES(?,?,?,?)",(self.sesh_id,turn_obj.difficulty_lvl,turn_obj.correct_incorrect,turn_obj.time_taken))
-        conn.comit()
+        c.execute("INSERT INTO turns ('session_id', 'difficulty_lvl', 'correct_incorrect', 'time_taken') VALUES(?,?,?,?)",(self.sesh_id,turn_obj.difficulty_lvl,turn_obj.correct_incorrect,turn_obj.time_taken))
+        conn.commit()
         c.close()
 
     def save_sesh(self, user_id):
