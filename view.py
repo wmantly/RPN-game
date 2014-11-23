@@ -196,7 +196,7 @@ class View:
         answer = self.body.getstr(6, 3, 60)
         return answer
 
-    def devConsole( self, message ):
+    def devConsole( self, message, sleep=0 ):
         # side bar
         if not self.showDev: return False
 
@@ -207,6 +207,8 @@ class View:
         for i in message:
             count += 1
             self.dev.addstr( count, 2, i )
+            print( i )
 
+        time.sleep( sleep )
         return self.dev.refresh()
 ##testing

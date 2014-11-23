@@ -85,4 +85,10 @@ class Game:
 # start the main process in a curses wrapper
 # this MUST be done for a clean exit!!!
 # https://docs.python.org/3/library/curses.html#curses.wrapper
-curses.wrapper(Game) 
+# curses.wrapper(Game) 
+
+try: 
+     curses.wrapper( Game ) 
+except KeyboardInterrupt: 
+     print( "Got KeyboardInterrupt exception. Exiting..." )
+     exit() 
