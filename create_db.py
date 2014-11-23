@@ -37,7 +37,7 @@ def create_turns_table():
 		'session_id' INTEGER,
 		'difficulty_lvl' INTEGER,
 		'correct_incorrect' VARCHAR,
-		'time_taken' INTEGER,
+		'time_taken' VARCHAR,
 		PRIMARY KEY ('id'),
 		FOREIGN KEY (session_id) REFERENCES sessions(id)
 		)""")

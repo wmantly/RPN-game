@@ -27,9 +27,6 @@ class DB:
         c.close()
         return last_inserted_user
     
-    def update_user_stats(self):
-        pass
-
     def fetch_user(self,name,pin):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
@@ -47,17 +44,24 @@ class DB:
     def save_turn(self,turn_obj):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute("INSERT INTO turns VALUES(?,?,?,?)",(self.sesh_id,turn_obj.difficulty_lvl,turn_obj.correct_incorrect,turn_obj.time_taken))
-        conn.comit()
+        print(type(self.sesh_id),type(turn_obj.difficulty_lvl),
+                    type(turn_obj.correct_incorrect),
+                    type(turn_obj.time_taken))
+        c.execute("INSERT INTO turns(session_id,difficulty_lvl,correct_incorrect,time_taken) VALUES(?,?,?,?)",
+                    (self.sesh_id,turn_obj.difficulty_lvl,
+                    turn_obj.correct_incorrect,
+                    turn_obj.time_taken))
+        conn.commit()
         c.close()
 
     def save_sesh(self, user_id):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()        
         c.execute("INSERT INTO sessions ('user_id') VALUES(?)",(user_id,))
+        session_id = c.lastrowid
         conn.commit()
-        c.close()        
-        self.sesh_id = c.lastrowid
+        c.close()
+        self.sesh_id = session_id
 
 
 class Turns:
