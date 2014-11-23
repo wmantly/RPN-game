@@ -2,8 +2,9 @@ from view import View
 import model
 import sys
 from datetime import datetime
-db = model.DB()
 import curses
+
+db = model.DB()
 
 class Game:
     def __init__ (self, screen):
@@ -23,6 +24,7 @@ class Game:
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
         if this_user:
+            self.view.update_user( obj['name'] )
             db.save_sesh(this_user.user_id)
             self.new_round()
         else:
@@ -30,20 +32,16 @@ class Game:
             self.sign_up( self.view.sign_up( message ) )
 
     def login(self, obj):
-        verify = db.fetch_user(obj['name'], obj['password'])
-        if verify:
-
+        this_user = db.fetch_user(obj['name'], obj['password'])
+        if this_user:
+            db.save_sesh(this_user.user_id)             
+            self.view.update_user( obj['name'] )
             self.new_round()
         else:
             message = "Invalid login"
             self.login( self.view.login( message ) )
 
     def new_round(self, last_turn = None):
-
-        # update view 
-        # each value of the list is line of output on the sidebar
-        self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
-        
         # please find a way to get the user name into the call below
         self.view.update_user( [ 'user name variable here' ] )
 
@@ -66,7 +64,6 @@ class Game:
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
         db = model.DB()
         db.save_turn(new_turn)
-
         self.new_round(new_turn)
 
     def sesh_totals(self, last_turn=None):
