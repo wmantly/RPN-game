@@ -16,7 +16,7 @@ class View:
         # hide KB input
         curses.noecho()
 
-        #curses.curs_set(1)
+        curses.curs_set(0)
 
         # idk, i have to look it up
         self.screen.keypad(1)
@@ -55,9 +55,18 @@ class View:
         #listen for keyboard input
         while True:
             event = self.screen.getch()
-            if event == ord( "q" ) or event == ord( "Q" ): exit();
-            if event == ord( "n" ) or event == ord( "N" ): return False
-            if event == ord( "l" ) or event == ord( "L" ): return True
+            if event == ord( "q" ) or event == ord( "Q" ):
+                # needs work...
+                curses.endwin()
+                exit()
+            if event == ord( "n" ) or event == ord( "N" ):
+                return False
+            if event == ord( "l" ) or event == ord( "L" ):
+                return True
+            else:
+                self.body.addstr( 5, 3, "Please make a valid selection." )
+                # draw the body
+                self.body.refresh()
 
     def sign_up( self, noClear=False ):
 
