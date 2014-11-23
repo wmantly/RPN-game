@@ -2,9 +2,8 @@ from view import View
 import model
 import sys
 from datetime import datetime
-import curses
-
 db = model.DB()
+import curses
 
 class Game:
     def __init__ (self, screen):
@@ -33,18 +32,21 @@ class Game:
     def login(self, obj):
         verify = db.fetch_user(obj['name'], obj['password'])
         if verify:
-            db.save_sesh(verify.user_id)
-             # each value of the list is line of output on the sidebar
-            self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
 
-
-            self.view.update_user( [ obj['name'] ] )
             self.new_round()
         else:
             message = "Invalid login"
             self.login( self.view.login( message ) )
 
     def new_round(self, last_turn = None):
+
+        # update view 
+        # each value of the list is line of output on the sidebar
+        self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
+        
+        # please find a way to get the user name into the call below
+        self.view.update_user( [ 'user name variable here' ] )
+
         new_turn = model.Turns()
         new_turn.start_time = datetime.now()
         rpn_as_string = ' '.join(new_turn.rpn.expression)
@@ -59,7 +61,6 @@ class Game:
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
 
         answer = self.view.show_rpn(info_obj)
-        self.view.devConsole( info_obj )
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
@@ -103,4 +104,10 @@ class Game:
 # start the main process in a curses wrapper
 # this MUST be done for a clean exit!!!
 # https://docs.python.org/3/library/curses.html#curses.wrapper
-curses.wrapper(Game) 
+# curses.wrapper(Game) 
+
+try: 
+     curses.wrapper( Game ) 
+except KeyboardInterrupt: 
+     print( "Got KeyboardInterrupt exception. Exiting..." )
+     exit() 
