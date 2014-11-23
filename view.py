@@ -118,7 +118,7 @@ class View:
         return( { 'name':name, 'password':password } )
 
     def login( self, message=False ):
-        self.devConsole( [ str( message ) ] )
+    
         # remove old body content
         self.body.clear()
         # allow user to see KB input
@@ -157,7 +157,6 @@ class View:
 
     def update_user( self, array ):
 
-        self.devConsole( ['update_user'] )
         # remove old content
         self.header_right.clear()
         self.header_right.border(0)
@@ -202,6 +201,7 @@ class View:
             self.dev.addstr( count, 2, i )
             print( i )
 
+        self.dev.refresh()
         time.sleep( sleep )
-        return self.dev.refresh()
+        
 ##testing
