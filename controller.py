@@ -1,7 +1,8 @@
-import model
 from view import View
+import model
 import sys
 from datetime import datetime
+db = model.DB()
 import curses
 
 class Game:
@@ -19,18 +20,18 @@ class Game:
             self.sign_up(self.view.sign_up())
 
     def sign_up(self, obj):
-        db = model.DB()
         this_user = db.create_user(obj['name'], obj['password'])
         if this_user:
+            db.save_sesh(this_user.user_id)
             self.new_round()
         else:
             message = "User name taken"
             self.sign_up( self.view.sign_up( message ) )
 
     def login(self, obj):
-        db = model.DB()
         verify = db.fetch_user(obj['name'], obj['password'])
         if verify:
+            db.save_sesh(verify.user_id)
              # each value of the list is line of output on the sidebar
             self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
 

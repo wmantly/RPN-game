@@ -20,10 +20,9 @@ def create_sessions_table():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS 'sessions'")
     c.execute(""" CREATE TABLE 'sessions'(
-        'id' INTEGER,
+        'id' INTEGER PRIMARY KEY,
         'user_id' INTEGER,
-        'created_at' DATE,
-        PRIMARY KEY ('id'),
+        'created_at' DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(user_id) REFERENCES user(id)) 
     """)
     conn.commit()
