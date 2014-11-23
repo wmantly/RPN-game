@@ -15,8 +15,6 @@ class Game:
     def sign_up(self, obj):
         db = model.DB()
         this_user = db.create_user(obj['name'], obj['password'])
-        print(this_user)
-        input()
         if this_user:
             self.new_round()
         else:
@@ -26,9 +24,15 @@ class Game:
         db = model.DB()
         verify = db.fetch_user(obj['name'], obj['password'])
         if verify:
+             # each value of the list is line of output on the sidebar
+            view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
+
+
+            view.update_user( [ obj['name'] ] )
             self.new_round()
         else:
-            view.incorrect_password()
+            message = "User name taken"
+            self.sign_up(view.sign_up( message ))
 
     def new_round(self, last_turn = None):
         new_turn = model.Turns()
@@ -47,6 +51,9 @@ class Game:
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
         db.save_turn(new_turn)
         self.new_round(new_turn)
+
+        # each value of the list is line of output on the sidebar
+        view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
 
     def calculate_next_rpn_diff(self):
         #run some queries in the db to see if we should up the difficulty or drop it

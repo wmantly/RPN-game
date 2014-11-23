@@ -24,19 +24,34 @@ class View:
         # draw the main screen
         self.screen.refresh()
 
-        #setup the header window
-        self.header = curses.newwin( 4, 70, 2, 2 )
+        # setup the header window
+        self.header = curses.newwin( 4, 35, 2, 3 )
         self.header.border(0)
 
-        #setup the body window
-        self.body = curses.newwin( 11, 70, 6 , 2)
-        self.body.border(0)
+        # setup the right header window
+        self.header_right = curses.newwin( 4, 35, 2, 38 )
+        self.header_right.border(0)
+        self.header_right.refresh()
+
+        # setup the body window
+        self.body = curses.newwin( 11, 50, 6 , 3)
+        # self.body.border(0)
+
+        # side bar
+        self.side_bar = curses.newwin( 11, 20, 6 , 53)
+        self.side_bar.border(0)
+
+
+        #############################################
+
+        self.header_right.addstr( 1, 20, "Not logged in")
+        self.header_right.refresh()
 
     def welcome( self ):
         
         # write the header up
-        self.header.addstr( 1, 1, "Welcome to the RPN game!" )
-        self.header.addstr( 2, 1, "Go bears!" )
+        self.header.addstr( 1, 2, "Welcome to the RPN game!" )
+        self.header.addstr( 2, 2, "Go bears!" )
 
         #draw the header
         self.header.refresh()
@@ -68,11 +83,10 @@ class View:
                 # draw the body
                 self.body.refresh()
 
-    def sign_up( self, noClear=False ):
+    def sign_up( self, message=False ):
 
-        if not noClear:
-            # remove old body content
-            self.body.clear()
+        # remove old body content
+        self.body.clear()
 
         # allow user to see KB input
         curses.echo()
@@ -90,6 +104,11 @@ class View:
         #self.body.refresh()
         password = self.body.getstr(6, 2, 60)
 
+        # if error message
+        if message:
+            self.body.addstr( 7,2, message )
+            self.body.refresh()
+
         return( { 'name':name, 'password':password } )
 
     def name_exists( self ):
@@ -102,6 +121,8 @@ class View:
     def login( self ):
         # remove old body content
         self.body.clear()
+        # allow user to see KB input
+        curses.echo()
 
         self.body.addstr(2, 2, "Please log in with your user name and pin:" )
 
@@ -113,6 +134,33 @@ class View:
         password = self.body.getstr(6, 2, 60)
 
         return( { 'name':name, 'password':password } )
+
+    def update_side_bar( self, array ):
+
+        # remove old content
+        self.side_bar.clear()
+        self.side_bar.border(0)
+        left = 3
+        count = 1
+        for i in array:
+            self.side_bar.addstr( count, left, i )
+            count += 1
+        # draw new content
+        self.side_bar.refresh()
+
+    def update_user( self, array ):
+
+        # remove old content
+        self.header_right.clear()
+        self.header_right.border(0)
+
+        left = 10
+        count = 1
+        for i in array:
+            self.header_right.addstr( count, left, i )
+            count += 1
+        # draw new content
+        self.header_right.refresh()
 
     def show_rpn( self, obj ):
         # remove old body content
@@ -133,4 +181,9 @@ class View:
         answer = self.body.getstr(6, 3, 60)
         return answer
 
+    def dev(self, mess ):
+        # side bar
+        self.dev = curses.newwin( 11, 20, 17 , 53)
+        self.dev.border(0)
+        pass
 ##testing
