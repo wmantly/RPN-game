@@ -24,7 +24,7 @@ class Game:
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
         if this_user:
-            # self.view.update_user( obj['name'] )
+            self.view.update_user( [ obj['name'] ] )
             db.save_sesh(this_user.user_id)
             self.new_round()
         else:
@@ -35,7 +35,7 @@ class Game:
         this_user = db.fetch_user(obj['name'], obj['password'])
         if this_user:
             db.save_sesh(this_user.user_id)             
-            # self.view.update_user( obj['name'] )
+            self.view.update_user( [ obj['name'] ] )
             self.new_round()
         else:
             message = "Invalid login"
