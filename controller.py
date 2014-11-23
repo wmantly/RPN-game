@@ -2,16 +2,22 @@ from view import View
 import model
 import sys
 from datetime import datetime
-
-view = View()
 db = model.DB()
+import curses
 
 class Game:
-    def __init__ (self):
-        if view.welcome():
-            self.login(view.login())
+    def __init__ (self, screen):
+
+        # initialize the Vie class
+        self.view = View( screen, curses )
+
+        if 'dev' in sys.argv:
+            self.view.showDev = True
+
+        if self.view.welcome():
+            self.login(self.view.login())
         else:
-            self.sign_up(view.sign_up())
+            self.sign_up(self.view.sign_up())
 
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
@@ -19,21 +25,22 @@ class Game:
             db.save_sesh(this_user.user_id)
             self.new_round()
         else:
-            self.sign_up( view.name_exists() )
+            message = "User name taken"
+            self.sign_up( self.view.sign_up( message ) )
 
     def login(self, obj):
         verify = db.fetch_user(obj['name'], obj['password'])
         if verify:
             db.save_sesh(verify.user_id)
              # each value of the list is line of output on the sidebar
-            view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
+            self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
 
 
-            view.update_user( [ obj['name'] ] )
+            self.view.update_user( [ obj['name'] ] )
             self.new_round()
         else:
-            message = "User name taken"
-            self.sign_up(view.sign_up( message ))
+            message = "Invalid login"
+            self.login( self.view.login( message ) )
 
     def new_round(self, last_turn = None):
         new_turn = model.Turns()
@@ -46,7 +53,7 @@ class Game:
             info_obj["last_rpn"] = last_turn.rpn.expression
             info_obj["answer"] = last_turn.rpn.solution
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
-        answer = view.show_rpn(info_obj)
+        answer = self.view.show_rpn(info_obj)
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
@@ -55,7 +62,7 @@ class Game:
         self.new_round(new_turn)
 
         # each value of the list is line of output on the sidebar
-        view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
+        self.view.update_side_bar( ['time', '00:00','correct', '0', 'wrong', '0','difficulty', '1' ] )
 
     def calculate_next_rpn_diff(self):
         #run some queries in the db to see if we should up the difficulty or drop it
@@ -75,4 +82,7 @@ class Game:
         model.close_db()
         sys.exit()
 
-this_game = Game()
+# start the main process in a curses wrapper
+# this MUST be done for a clean exit!!!
+# https://docs.python.org/3/library/curses.html#curses.wrapper
+curses.wrapper(Game) 

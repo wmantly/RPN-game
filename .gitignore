@@ -1,4 +1,6 @@
 *.swp
 *.db
 *.pyc
+.*
 __pycache__/
+!/.gitignore

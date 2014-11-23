@@ -52,9 +52,11 @@ class DB:
         c.close()
 
     def save_sesh(self, user_id):
+        print (type(user_id))
+        print("***********************************")
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()        
-        c.execute("INSERT INTO sessions VALUES(?)",(user_id))
+        c.execute("INSERT INTO sessions ('user_id') VALUES(?)",(user_id))
         conn.commit()
         c.close()        
         self.sesh_id = c.lastrowid
