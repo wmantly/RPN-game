@@ -59,7 +59,7 @@ class Game:
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
 
         answer = self.view.show_rpn(info_obj)
-        new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
+        new_turn.correct_incorrect = (new_turn.rpn.solution == int(answer))
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
         db = model.DB()
