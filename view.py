@@ -117,14 +117,6 @@ class View:
 
         return( { 'name':name, 'password':password } )
 
-    def name_exists( self ):
-        # remove old body content
-        self.body.clear()
-        self.body.flash()
-
-        self.body.addstr(2, 2, "Sorry, that name is all ready registered!" )
-        return self.sign_up( True )
-
     def login( self, message=False ):
         self.devConsole( [ str( message ) ] )
         # remove old body content
@@ -165,6 +157,7 @@ class View:
 
     def update_user( self, array ):
 
+        self.devConsole( ['update_user'] )
         # remove old content
         self.header_right.clear()
         self.header_right.border(0)
