@@ -2,8 +2,9 @@ from view import View
 import model
 import sys
 from datetime import datetime
-db = model.DB()
 import curses
+
+db = model.DB()
 
 class Game:
     def __init__ (self, screen):
@@ -54,6 +55,7 @@ class Game:
             info_obj["answer"] = last_turn.rpn.solution
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
         answer = self.view.show_rpn(info_obj)
+        self.view.devConsole( info_obj )
         new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
         new_turn.end_time = datetime.now()
         new_turn.time_taken = new_turn.end_time - new_turn.start_time
