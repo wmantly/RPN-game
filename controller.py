@@ -1,7 +1,9 @@
 import model
-import view
+from view import View
 import sys
 from datetime import datetime
+
+view = View()
 
 class Game:
     def __init__ (self):
