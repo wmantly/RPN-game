@@ -17,9 +17,12 @@ class DB:
     def create_user(self,name,pin):
         conn = sqlite3.connect(self.db_name)
         c  = conn.cursor() 
-        c.execute("INSERT INTO user(name,pin)VALUES (?,?)",(name,pin))
-        cursor = sqlite3.execute('SELECT max(id) FROM user')
-        last_inserted_user = cursor.fetchone()
+        c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin))
+        c.execute('SELECT max(id) FROM user')
+        max_id = c.fetchall()
+        c.execute("SELECT * FROM user WHERE user.id = (?)", (max_id[0]))
+        this_row = c.fetchall()
+        last_inserted_user = User(this_row[0][1], this_row[0][0])
         conn.commit()
         c.close()
         return last_inserted_user
