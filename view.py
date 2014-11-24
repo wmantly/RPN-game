@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import time
-# import curses
+import random
 
 class View:
     def __init__( self, screen, curses ):
@@ -37,7 +37,7 @@ class View:
         self.header_right.refresh()
 
         # setup the body window
-        self.body = self.curses.newwin( 11, 50, 6 , 3)
+        self.body = self.curses.newwin( 15, 50, 6 , 3)
         # self.body.border(0)
 
         # side bar
@@ -53,8 +53,41 @@ class View:
         self.header_right.addstr( 1, 20, "Not logged in")
         self.header_right.refresh()
 
-    def welcome( self ):
-        
+    def menu( self, sidebar=True ):
+        #listen for keyboard input
+
+        if sidebar:
+            # hide KB input
+            self.curses.noecho()
+
+            self.update_side_bar( [
+                "c cedits",
+                "",
+                "l login",
+                "n new user",
+                "",
+                "Q Quit"
+            ] )
+
+        while True:
+            event = self.screen.getch()
+            if event == ord( "c" ) or event == ord( "C" ):
+                return { 'next': 'about' }
+            if event == ord( "q" ) or event == ord( "Q" ):
+                # needs work...
+                self.curses.endwin()
+                exit()
+            if event == ord( "n" ) or event == ord( "N" ):
+                return { 'next': 'sign_up' }
+            if event == ord( "l" ) or event == ord( "L" ):
+                return { 'next': 'login' }
+            else:
+                self.body.addstr( 5, 3, "Please make a valid selection." )
+                # draw the body
+                self.body.refresh()
+
+    def welcome( self, message=False ):
+
         # write the header up
         self.header.addstr( 1, 2, "Welcome to the RPN game!" )
         #draw the header
@@ -66,28 +99,16 @@ class View:
         time.sleep(.5)
 
         # write the body
-        self.body.addstr( 1, 3, "l login" )
-        self.body.addstr( 2, 3, "n new user" )
-        self.body.addstr( 3, 3, "Q Quit" )
+        self.body.addstr( 1, 3, "c cedits" )
+        self.body.addstr( 3, 3, "l login" )
+        self.body.addstr( 4, 3, "n new user" )
+        self.body.addstr( 6, 3, "Q Quit" )
 
         # draw the body
         self.body.refresh()
 
         #listen for keyboard input
-        while True:
-            event = self.screen.getch()
-            if event == ord( "q" ) or event == ord( "Q" ):
-                # needs work...
-                self.curses.endwin()
-                exit()
-            if event == ord( "n" ) or event == ord( "N" ):
-                return False
-            if event == ord( "l" ) or event == ord( "L" ):
-                return True
-            else:
-                self.body.addstr( 5, 3, "Please make a valid selection." )
-                # draw the body
-                self.body.refresh()
+        return self.menu( False )
 
     def sign_up( self, message=False ):
 
@@ -176,17 +197,55 @@ class View:
         if len(obj) > 2:
 
             if obj['right_or_wrong']:
-                self.body.addstr(2, 2, "Right!" )
+                self.body.addstr( 2, 2, "Right!" )
             else:
-                self.body.addstr(2, 2, "Wrong!, the correct answer is " + obj['answer'] )
-            self.body.addstr(3, 2, "time taken: " + str(obj['time_taken']) )
+                self.body.addstr( 2, 2, "Wrong!, the correct answer is " + obj['answer'] )
+            self.body.addstr( 3, 2, "time taken: " + str(obj['time_taken']) )
 
-        self.body.addstr(4, 2, "Please solve!") 
-        self.body.addstr(5, 2, obj["rpn"] + "\n" )
-        self.body.addstr(6, 2, "?")
+        self.body.addstr( 4, 2, "Please solve!") 
+        self.body.addstr( 5, 2, obj["rpn"] )
+        self.body.addstr( 6, 2, "?")
         self.body.refresh()
-        answer = self.body.getstr(6, 3, 60)
+        answer = self.body.getstr( 6, 3, 60 )
         return answer
+
+    def about( self ):
+        # remove old body content
+        self.body.clear()
+        self.body.border(0)
+
+        array = [
+            {
+                'name': "William Mantly", 
+                'email': "wmantly@gmail.com", 
+                'desc': "Designed and implemented the UI."
+            },{
+                'name': "Benjamin Himley", 
+                'email': "benjaminhimley85@gmail.com", 
+                'desc': "wrote rpn generator and controller, bugfix assit"
+            },{
+                'name': "Adolfo Reyes", 
+                'email': "adolfo0620@gmail.com", 
+                'desc': "bug hunter"
+            },{
+                'name': "Brendan Gilroy", 
+                'email': "BDGilroy@gmail.com", 
+                'desc': ""
+            }
+        ]
+
+        random.shuffle(array)
+
+        line = 2
+        for i in array:
+            self.body.addstr( line, 2, i['name'] + ' - ' + i['email'] )
+            line += 1
+            self.body.addstr( line, 2, i['desc'] )
+            line += 2
+            self.body.refresh()
+            time.sleep(1)
+
+        return self.menu()
 
     def devConsole( self, message, sleep=0 ):
         # side bar
@@ -203,5 +262,5 @@ class View:
 
         self.dev.refresh()
         time.sleep( sleep )
-        
+
 ##testing

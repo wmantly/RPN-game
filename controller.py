@@ -16,10 +16,20 @@ class Game:
         if 'dev' in sys.argv:
             self.view.showDev = True
 
-        if self.view.welcome():
-            self.login(self.view.login())
-        else:
-            self.sign_up(self.view.sign_up())
+        self.view_loader( "welcome" )
+        #     self.login(self.view.login())
+        # else:
+        #     self.sign_up(self.view.sign_up())
+
+    def view_loader( self, view_name, passing=False ):
+        re = getattr( self.view , view_name )()
+        print(re)
+        if type( re ) == dict:
+            if 'return_to' in re:
+                return getattr( self, re['return_to'] )
+
+            if 'next' in re:
+                return self.view_loader( re['next'] )
 
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
@@ -101,7 +111,6 @@ class Game:
 # start the main process in a curses wrapper
 # this MUST be done for a clean exit!!!
 # https://docs.python.org/3/library/curses.html#curses.wrapper
-# curses.wrapper(Game) 
 
 try: 
      curses.wrapper( Game ) 
