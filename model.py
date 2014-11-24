@@ -1,5 +1,6 @@
 import random
 import sqlite3
+import hashlib
 
 defaultdb = "rpngame.db"
 
@@ -16,20 +17,24 @@ class DB:
     # please use number for pins
     def create_user(self,name,pin):
         conn = sqlite3.connect(self.db_name)
-        c  = conn.cursor() 
-        c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin))
-        c.execute('SELECT max(id) FROM user')
-        max_id = c.fetchall()
-        c.execute("SELECT * FROM user WHERE user.id = (?)", (max_id[0]))
-        this_row = c.fetchall()
-        last_inserted_user = User(this_row[0][1], this_row[0][0])
-        conn.commit()
-        c.close()
-        return last_inserted_user
-    
-    def update_user_stats(self):
-        pass
-
+        c  = conn.cursor()
+        c.execute("SELECT * FROM user WHERE name LIKE (?)",(name,))
+        result = c.fetchall()
+        if(len(result)==0):
+            c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin))
+            c.execute('SELECT max(id) FROM user')
+            max_id = c.fetchall()
+            c.execute("SELECT * FROM user WHERE user.id = (?)", (max_id[0]))
+            this_row = c.fetchall()
+            last_inserted_user = User(this_row[0][1], this_row[0][0])
+            conn.commit()
+            c.close()
+            return last_inserted_user
+        else:
+            conn.commit()
+            c.close()
+            return False
+ 
     def fetch_user(self,name,pin):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
@@ -41,6 +46,8 @@ class DB:
             c.close()
             return user
         except IndexError:
+            conn.commit()
+            c.close()
             return False
 
     # inorder for this code to work this needs the session id
@@ -119,3 +126,6 @@ class RPN:
 # rpn = RPN(1,10, 7)
 # print(rpn.expression)
 # print(rpn.generate_solution)
+# db = DB()
+# print(db.create_user("bob",555))
+
