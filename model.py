@@ -69,13 +69,13 @@ class DB:
 
 
 class Turns:
-    def __init__(self):
+    def __init__(self, difficulty):
         self.start_time = None
         self.end_time = None
-        self.difficulty_lvl = 1
+        self.difficulty_lvl = difficulty
         self.correct_incorrect = None 
         self.time_taken = None
-        self.rpn = RPN(1, 10, 5)
+        self.rpn = RPN(1, 10, difficulty + 2) if difficulty < 5 else RPN(2, 10, difficulty + 2)
 
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
