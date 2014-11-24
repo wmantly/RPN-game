@@ -104,7 +104,7 @@ class RPN:
         for i in range(0, lengthLimit):
             these_operators.append(ops[random.randint(0,operatorLimit)])
             numbers.append(random.randint(1, numberLimit))            
-        numbers.append(random.randint(0, numberLimit))
+        numbers.append(random.randint(1, numberLimit))
         final.append(str(numbers.pop()))
         final.append(str(numbers.pop()))
         numberCount = 1
