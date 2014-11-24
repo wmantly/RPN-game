@@ -106,9 +106,8 @@ class Game:
         pass        
 
     def check_high_scores(self):
-        #get high scores from model/db
-        #pass scores to view
-        pass
+        high_scores = db.get_high
+        self.view.show_high_scores(high_scores)
 
     def check_personal_stats(self):
         #get personal stats from model/db

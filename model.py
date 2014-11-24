@@ -67,6 +67,13 @@ class DB:
         c.close()        
         self.sesh_id = c.lastrowid
 
+    def get_high(self):
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        c.execute("SELECT * FROM user ORDER BY name ASC")
+        these_users = c.fetchall()
+        return these_users        
+
 
 class Turns:
     def __init__(self, difficulty):
