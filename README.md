@@ -16,8 +16,7 @@ on the devconsole takes a second argument that will sleep the function
 Its an int in seconds 
 
 ##To Do:
-###needed:
-difficulty logic hooked into game so the difficulty of the rpn problems changes  in response to user success/failure
+
 ###nice-to-have
 user can review profile, see bar graph of solved problems by difficulty
 
