@@ -115,7 +115,6 @@ class Game:
         pass
 
     def end_game(self):
-        model.close_db()
         sys.exit()
 
 # start the main process in a curses wrapper
