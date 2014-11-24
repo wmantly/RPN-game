@@ -1,5 +1,5 @@
-
-will allow dev outptWilliam 
+##to use dev console:
+will allow dev outpt
 and view.devConsole( [ message] )
 will print dev message, one line per item in passed array
 instead of print 
@@ -14,3 +14,15 @@ and it only works in controller.py and view.py, there would need to be a abstrac
 
 on the devconsole takes a second argument that will sleep the function
 Its an int in seconds 
+
+##To Do:
+###needed:
+difficulty logic hooked into game so the difficulty of the rpn problems changes  in response to user success/failure
+###nice-to-have
+user can review profile, see bar graph of solved problems by difficulty
+
+high scores of different users
+
+after each solution, user sees the message along with former problem AND solution
+
+have some kind of race against something so the user has to figure out the rpn before some visual thing happens(hammer drops)
