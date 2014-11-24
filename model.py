@@ -1,7 +1,6 @@
 import random
 import sqlite3
 import hashlib
-
 defaultdb = "rpngame.db"
 
 class User:
@@ -21,7 +20,8 @@ class DB:
         c.execute("SELECT * FROM user WHERE name LIKE (?)",(name,))
         result = c.fetchall()
         if(len(result)==0):
-            c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin))
+            pin = hashlib.md5( pin)
+            c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin.hexdigest()))
             c.execute('SELECT max(id) FROM user')
             max_id = c.fetchall()
             c.execute("SELECT * FROM user WHERE user.id = (?)", (max_id[0]))
@@ -36,9 +36,10 @@ class DB:
             return False
  
     def fetch_user(self,name,pin):
+        pin = hashlib.md5( pin)
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(pin,name))
+        c.execute("SELECT name,id FROM user WHERE user.pin=(?) and user.name=(?)",(pin.hexdigest(),name))
         try:
             user_data = c.fetchall()[0]
             user = User(user_data[0],user_data[1])
