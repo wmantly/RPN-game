@@ -102,13 +102,9 @@ class Game:
             self.sesh_totals['difficulty'] += 1           
         #self.view.update_side_bar( ['last time', self.sesh_totals['time'],'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
 
-    def calculate_next_rpn_diff(self):
-        #run some queries in the db to see if we should up the difficulty or drop it
-        pass        
-
     def check_high_scores(self):
         # high_scores = db.get_high
-        # self.view.show_high_scores(high_scores)
+        # self.viecw.show_high_scores(high_scores)
         pass
 
     def check_personal_stats(self):
