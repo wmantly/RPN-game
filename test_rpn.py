@@ -3,14 +3,7 @@ import random
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
         self.expression = self.generate_expression(operatorLimit, numberLimit, lengthLimit)
-        # self.solution = self.generate_solution(self.expression)
-
-    # def chooseRandom(operatorLimit,numberLimit):
-    #     Operators = ["+","-","*"] # "/"
-    #     chosenOperator = Operators[random.randint(0,operatorLimit)]
-    #     chosenFirstNumber = str(random.randint(1,numberLimit))
-    #     chosenSecondNumber = str(random.randint(1,numberLimit))
-    #     return chosenOperator, chosenFirstNumber, chosenSecondNumber
+        self.solution = self.generate_solution(self.expression)
 
     def generate_solution(self, expression):
         x = 0
@@ -31,45 +24,24 @@ class RPN:
         ops = ["+", "-", "*"] # "\", "%"
         numbers = []
         these_operators = []
-        unshuffled = []
         final = []
         for i in range(0, lengthLimit):
             these_operators.append(ops[random.randint(0,operatorLimit)])
+            numbers.append(random.randint(1, numberLimit))            
         numbers.append(random.randint(0, numberLimit))
-        for i in range(0, lengthLimit):
-            numbers.append(random.randint(0, numberLimit))
-        final.append(numbers.pop(0))
-        final.append(numbers.pop(0))
+        final.append(str(numbers.pop()))
+        final.append(str(numbers.pop()))
         numberCount = 1
-        #here need to add a number or operator, randomly.... need numbers always one more than operators
-
-        final = final + unshuffled
-        for i in final:
-            i = str(i)
+        get_shuffled = numbers + these_operators
+        random.shuffle(get_shuffled)
+        print(get_shuffled)
+        for i in get_shuffled:
+            if numberCount == 0 and type(i) == str:
+                get_shuffled.append(i)
+            elif numberCount > 0 and type(i) == str:
+                final.append(i)
+                numberCount -= 1
+            else:
+                final.append(str(i))
+                numberCount += 1
         return final
-
-
-
-
-        # chosenLength = random.randint(1,lengthLimit)
-        # TestString = []
-        # length = 0
-        # difficulty = 0 
-
-        # while length < chosenLength:
-        #     currentOperator, currentFirstNumber, currentSecondNumber = RPN.chooseRandom(operatorLimit, numberLimit)
-        #     if length == 0:
-        #         TestString.append(currentFirstNumber)
-        #         TestString.append(currentSecondNumber)
-        #         TestString.append(currentOperator)
-        #     else:
-        #         TestString.append(currentFirstNumber)
-        #         TestString.append(currentOperator)
-        #     length += 1
-        
-        # return TestString
-
-rpn = RPN(1,10, 4)
-print(rpn.expression)
-# answer = rpn.solution
-# print(answer)

@@ -59,7 +59,6 @@ class Game:
         new_turn.correct_incorrect = (int(new_turn.rpn.solution) == int(answer))
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
-        db = model.DB()
         db.save_turn(new_turn)
         self.new_round(new_turn)
 
