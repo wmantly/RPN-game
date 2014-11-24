@@ -75,24 +75,16 @@ class Turns:
         self.difficulty_lvl = 1
         self.correct_incorrect = None 
         self.time_taken = None
-        self.rpn = RPN(1, 10, 7)
+        self.rpn = RPN(1, 10, 5)
 
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
         self.expression = self.generate_expression(operatorLimit, numberLimit, lengthLimit)
         self.solution = self.generate_solution(self.expression)
 
-    def chooseRandom(operatorLimit,numberLimit):
-        Operators = ["+","-","*"] # "/"
-        chosenOperator = Operators[random.randint(0,operatorLimit)]
-        chosenFirstNumber = str(random.randint(1,numberLimit))
-        chosenSecondNumber = str(random.randint(1,numberLimit))
-        return chosenOperator, chosenFirstNumber, chosenSecondNumber
-
-    # broken
     def generate_solution(self, expression):
         x = 0
-        ops = ["+", "-", "*"] # "\", "mod"
+        ops = ["+", "-", "*"] # "\", "%"
         stack = []
         while x < len(expression):
             if not expression[x] in ops:
@@ -106,31 +98,28 @@ class RPN:
 
 
     def generate_expression(self, operatorLimit, numberLimit, lengthLimit):
-        chosenLength = random.randint(1,lengthLimit)
-        TestString = []
-        length = 0
-        difficulty = 0 
-
-        while length < chosenLength:
-            currentOperator, currentFirstNumber, currentSecondNumber = RPN.chooseRandom(operatorLimit, numberLimit)
-            if length == 0:
-                TestString.append(currentFirstNumber)
-                TestString.append(currentSecondNumber)
-                TestString.append(currentOperator)
+        ops = ["+", "-", "*"] # "\", "%"
+        numbers = []
+        these_operators = []
+        final = []
+        for i in range(0, lengthLimit):
+            these_operators.append(ops[random.randint(0,operatorLimit)])
+            numbers.append(random.randint(1, numberLimit))            
+        numbers.append(random.randint(1, numberLimit))
+        final.append(str(numbers.pop()))
+        final.append(str(numbers.pop()))
+        numberCount = 1
+        get_shuffled = numbers + these_operators
+        random.shuffle(get_shuffled)
+        print(get_shuffled)
+        for i in get_shuffled:
+            if numberCount == 0 and type(i) == str:
+                get_shuffled.append(i)
+            elif numberCount > 0 and type(i) == str:
+                final.append(i)
+                numberCount -= 1
             else:
-                TestString.append(currentFirstNumber)
-                TestString.append(currentOperator)
-            length += 1
-        
-        return TestString
-
-    def compare_user_answer(self, user_answer):
-        pass
-
-# test 
-# rpn = RPN(1,10, 7)
-# print(rpn.expression)
-# print(rpn.generate_solution)
-# db = DB()
-# print(db.create_user("bob",555))
+                final.append(str(i))
+                numberCount += 1
+        return final
 

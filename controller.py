@@ -42,9 +42,6 @@ class Game:
             self.login( self.view.login( message ) )
 
     def new_round(self, last_turn = None):
-        # please find a way to get the user name into the call below
-        # self.view.update_user( [ 'user name variable here' ] )
-
         new_turn = model.Turns()
         new_turn.start_time = datetime.now()
         rpn_as_string = ' '.join(new_turn.rpn.expression)
@@ -59,10 +56,9 @@ class Game:
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
 
         answer = self.view.show_rpn(info_obj)
-        new_turn.correct_incorrect = (new_turn.rpn.solution == answer)
+        new_turn.correct_incorrect = (int(new_turn.rpn.solution) == int(answer))
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
-        db = model.DB()
         db.save_turn(new_turn)
         self.new_round(new_turn)
 
