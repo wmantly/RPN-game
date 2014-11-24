@@ -63,9 +63,9 @@ class DB:
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()        
         c.execute("INSERT INTO sessions ('user_id') VALUES(?)",(user_id,))
+        self.sesh_id = c.lastrowid
         conn.commit()
         c.close()        
-        self.sesh_id = c.lastrowid
 
     def get_high(self):
         conn = sqlite3.connect(self.db_name)
