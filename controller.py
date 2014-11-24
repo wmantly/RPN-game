@@ -12,6 +12,11 @@ class Game:
         # initialize the View class
         self.view = View( screen, curses )
         self.sesh_totals = {}  
+        self.sesh_totals['time'] = 0
+        self.sesh_totals['correct'] = 0
+        self.sesh_totals['wrong'] = 0
+        self.sesh_totals['difficulty'] = 1   
+
 
         if 'dev' in sys.argv:
             self.view.showDev = True
@@ -51,8 +56,8 @@ class Game:
             message = "Invalid login"
             self.login( self.view.login( message ) )
 
-    def new_round(self, last_turn = None):
-        new_turn = model.Turns()
+    def new_round(self, last_turn = None, difficulty=1):
+        new_turn = model.Turns(difficulty)
         new_turn.start_time = datetime.now()
         rpn_as_string = ' '.join(new_turn.rpn.expression)
         info_obj = {}
@@ -66,23 +71,24 @@ class Game:
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
 
         answer = self.view.show_rpn(info_obj)
+        self.view.devConsole( (str(self.sesh_totals['difficulty']), str(self.sesh_totals['correct']), str(self.sesh_totals['wrong']) ))
         new_turn.correct_incorrect = (int(new_turn.rpn.solution) == int(answer))
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
         db.save_turn(new_turn)
-        self.new_round(new_turn)
+        self.new_round(new_turn, self.sesh_totals['difficulty'])
 
     def change_sesh_totals(self, last_turn=None):
-        self.sesh_totals['time'] = 0
-        self.sesh_totals['correct'] = 0
-        self.sesh_totals['wrong'] = 0
-        self.sesh_totals['difficulty'] = 1   
-
         if last_turn:
             self.sesh_totals['time'] = last_turn.time_taken
             self.sesh_totals['correct'] += 1 if last_turn.correct_incorrect else 0
-            self.sesh_totals['correct'] += 0 if last_turn.correct_incorrect else 1
+            self.sesh_totals['wrong'] += 0 if last_turn.correct_incorrect else 1
             self.sesh_totals['difficulty'] = 1
+
+        if self.sesh_totals['correct'] + 3 <= self.sesh_totals['wrong']:
+            self.sesh_totals['difficulty'] -= 1 if self.sesh_totals['difficulty'] > 1 else 0
+        if self.sesh_totals['correct'] - 3 >= self.sesh_totals['wrong']:
+            self.sesh_totals['difficulty'] += 1           
         # each value of the list is line of output on the sidebar
         # self.view.update_side_bar( ['last time', self.sesh_totals['time'],'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
 
