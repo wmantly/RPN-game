@@ -67,7 +67,7 @@ class Game:
         rpn_as_string = ' '.join(new_turn.rpn.expression)
         info_obj = {}
         info_obj["rpn"] = rpn_as_string
-        self.change_sesh_totals(last_turn)
+        # self.change_sesh_totals(last_turn)
         if last_turn:
             last_turn.time_taken = last_turn.end_time - last_turn.start_time
             info_obj["time_taken"] = (last_turn.time_taken)
@@ -83,6 +83,7 @@ class Game:
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
         db.save_turn(new_turn)
+        self.change_sesh_totals(new_turn)
         self.last_turn = new_turn
         self.last_info_obj = info_obj
         # self.new_round(new_turn, self.sesh_totals['difficulty'])
