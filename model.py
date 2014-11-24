@@ -18,7 +18,7 @@ class DB:
     def create_user(self,name,pin):
         conn = sqlite3.connect(self.db_name)
         c  = conn.cursor()
-        c.execute("select * from user where name like (?)",(name,))
+        c.execute("SELECT * FROM user WHERE name LIKE (?)",(name,))
         result = c.fetchall()
         if(len(result)==0):
             c.execute("INSERT INTO user(name,pin) VALUES (?,?)",(name,pin))
@@ -130,6 +130,6 @@ class RPN:
 # rpn = RPN(1,10, 7)
 # print(rpn.expression)
 # print(rpn.generate_solution)
-db = DB()
-print(db.create_user("bob",555))
+# db = DB()
+# print(db.create_user("bob",555))
 
