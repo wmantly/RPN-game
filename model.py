@@ -67,7 +67,7 @@ class Turns:
         self.difficulty_lvl = 1
         self.correct_incorrect = None 
         self.time_taken = None
-        self.rpn = RPN(1, 10, 7)
+        self.rpn = RPN(1, 10, 5)
 
 class RPN:
     def __init__(self, operatorLimit, numberLimit, lengthLimit):
@@ -75,16 +75,15 @@ class RPN:
         self.solution = self.generate_solution(self.expression)
 
     def chooseRandom(operatorLimit,numberLimit):
-        Operators = ["+","-","*"] # "/"
-        chosenOperator = Operators[random.randint(0,operatorLimit)]
+        operators = ["+","-","*"] # "/", "%"
+        chosenOperator = operators[random.randint(0,operatorLimit)]
         chosenFirstNumber = str(random.randint(1,numberLimit))
         chosenSecondNumber = str(random.randint(1,numberLimit))
         return chosenOperator, chosenFirstNumber, chosenSecondNumber
 
-    # broken
     def generate_solution(self, expression):
         x = 0
-        ops = ["+", "-", "*"] # "\", "mod"
+        ops = ["+", "-", "*"] # "\", "%"
         stack = []
         while x < len(expression):
             if not expression[x] in ops:
@@ -115,9 +114,6 @@ class RPN:
             length += 1
         
         return TestString
-
-    def compare_user_answer(self, user_answer):
-        pass
 
 # test 
 # rpn = RPN(1,10, 7)
