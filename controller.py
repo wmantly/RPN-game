@@ -17,24 +17,21 @@ class Game:
         self.sesh_totals['wrong'] = 0
         self.sesh_totals['difficulty'] = 1   
 
-
         if 'dev' in sys.argv:
             self.view.showDev = True
 
         self.view_loader( "welcome" )
-        #     self.login(self.view.login())
-        # else:
-        #     self.sign_up(self.view.sign_up())
 
-    def view_loader( self, view_name, passing=False ):
-        re = getattr( self.view , view_name )()
-        print(re)
+    def view_loader( self, view_name, passing=None ):
+        re = getattr( self.view , view_name )( passing )
+
         if type( re ) == dict:
-            if 'return_to' in re:
-                return getattr( self, re['return_to'] )
+            if '_return_to' in re:
+                return getattr( self, re['_return_to'] )( re )
 
-            if 'next' in re:
-                return self.view_loader( re['next'] )
+            if '_next' in re:
+                self.view_loader( re['_next'] )
+        return re
 
     def sign_up(self, obj):
         this_user = db.create_user(obj['name'], obj['password'])
@@ -44,7 +41,7 @@ class Game:
             self.new_round()
         else:
             message = "User name taken"
-            self.sign_up( self.view.sign_up( message ) )
+            self.view_loader( "sign_up", message )
 
     def login(self, obj):
         this_user = db.fetch_user(obj['name'], obj['password'])
@@ -56,7 +53,15 @@ class Game:
             message = "Invalid login"
             self.login( self.view.login( message ) )
 
+    def home( self, obj=[] ):
+        self.view_loader( 'home', obj )
+
+    def logOut( self, message=False ):
+        self.view.update_user( [ None ] )
+        self.view_loader( "welcome" )
+
     def new_round(self, last_turn = None, difficulty=1):
+        if last_turn: last_turn = self.last_turn
         new_turn = model.Turns(difficulty)
         new_turn.start_time = datetime.now()
         rpn_as_string = ' '.join(new_turn.rpn.expression)
@@ -70,13 +75,18 @@ class Game:
             info_obj["answer"] = last_turn.rpn.solution
             info_obj["right_or_wrong"] = last_turn.correct_incorrect
 
-        answer = self.view.show_rpn(info_obj)
+        answer = self.view_loader( 'show_rpn', info_obj )
+        self.view.devConsole( [ str(type(answer)), str( len( info_obj ) ) ] )
+        ## if answer != int: return False 
         self.view.devConsole( (str(self.sesh_totals['difficulty']), str(self.sesh_totals['correct']), str(self.sesh_totals['wrong']) ))
         new_turn.correct_incorrect = (int(new_turn.rpn.solution) == int(answer))
         new_turn.end_time = datetime.now()
         new_turn.time_taken = str(new_turn.end_time - new_turn.start_time)
         db.save_turn(new_turn)
-        self.new_round(new_turn, self.sesh_totals['difficulty'])
+        self.last_turn = new_turn
+        self.last_info_obj = info_obj
+        # self.new_round(new_turn, self.sesh_totals['difficulty'])
+        return self.home( self.sesh_totals.items() )
 
     def change_sesh_totals(self, last_turn=None):
         if last_turn:
@@ -89,8 +99,7 @@ class Game:
             self.sesh_totals['difficulty'] -= 1 if self.sesh_totals['difficulty'] > 1 else 0
         if self.sesh_totals['correct'] - 3 >= self.sesh_totals['wrong']:
             self.sesh_totals['difficulty'] += 1           
-        # each value of the list is line of output on the sidebar
-        # self.view.update_side_bar( ['last time', self.sesh_totals['time'],'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
+        #self.view.update_side_bar( ['last time', self.sesh_totals['time'],'correct', str(self.sesh_totals['correct']), 'wrong', str(self.sesh_totals['wrong']),'difficulty', str(self.sesh_totals['difficulty']) ] )
 
     def calculate_next_rpn_diff(self):
         #run some queries in the db to see if we should up the difficulty or drop it
