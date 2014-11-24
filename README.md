@@ -20,6 +20,9 @@ Its an int in seconds
 difficulty logic hooked into game so the difficulty of the rpn problems changes  in response to user success/failure
 ###nice-to-have
 user can review profile, see bar graph of solved problems by difficulty
+
 high scores of different users
+
 after each solution, user sees the message along with former problem AND solution
+
 have some kind of race against something so the user has to figure out the rpn before some visual thing happens(hammer drops)
