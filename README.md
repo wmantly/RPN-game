@@ -1,4 +1,4 @@
-##to use dev console:
+## to use dev console:
 will allow dev outpt
 and view.devConsole( [ message] )
 will print dev message, one line per item in passed array
@@ -15,9 +15,9 @@ and it only works in controller.py and view.py, there would need to be a abstrac
 on the devconsole takes a second argument that will sleep the function
 Its an int in seconds 
 
-##To Do:
+## To Do:
 
-###nice-to-have
+### nice-to-have
 user can review profile, see bar graph of solved problems by difficulty
 
 high scores of different users
